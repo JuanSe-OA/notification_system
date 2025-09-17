@@ -1,10 +1,16 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
-WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
+# === Build ===
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /workspace
+COPY pom.xml .
+RUN mvn -q -DskipTests dependency:go-offline
+COPY src ./src
+RUN mvn -q -DskipTests package
 
-FROM eclipse-temurin:21-jre-alpine
+# === Runtime ===
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /app/target/notifications-service-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# usa comodín por si cambia el nombre del jar
+COPY --from=build /workspace/target/*-SNAPSHOT.jar app.jar
+# ojo: si este micro expone 8081, cámbialo aquí
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","app.jar"]
