@@ -1,0 +1,42 @@
+# === Java / Maven ===
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# === Eclipse ===
+.classpath
+.project
+.settings/
+
+# === Logs ===
+*.log
+logs/
+*.out
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Build artifacts ===
+*.jar
+*.war
+*.ear
+
+# === Spring Boot ===
+application-*.yml
+application-*.yaml
+application-*.properties
+
+# === Docker ===
+/docker-compose.override.yml
+.env
