@@ -1,7 +1,6 @@
 package co.edu.uniquindio.ingesis.notifications_service.service;
 
 import co.edu.uniquindio.ingesis.notifications_service.entity.Notification;
-import co.edu.uniquindio.ingesis.notifications_service.entity.NotificationProducer;
 import co.edu.uniquindio.ingesis.notifications_service.entity.NotificationStatus;
 import co.edu.uniquindio.ingesis.notifications_service.repository.NotificationRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +20,6 @@ public class NotificationService {
     private final NotificationRepository repository;
     private final EmailSender emailSender;
     private final SmsSender smsSender;
-    private final NotificationProducer notificationProducer;
 
     public Notification createNotification(Notification notification) {
         notification.setCreatedAt(Instant.now());
@@ -35,8 +33,7 @@ public class NotificationService {
         Instant now = Instant.now();
         List<Notification> pendientes = repository.findByStatusAndScheduledAtBefore(NotificationStatus.PENDING, now);
         for (Notification notification : pendientes) {
-            notificationProducer.sendNotification(notification);
-            notification.setStatus(NotificationStatus.PENDING);
+            processNotification(notification);
             // Opcional: actualizar estado a ENVIANDO o similar
         }
     }
