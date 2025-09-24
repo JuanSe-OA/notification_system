@@ -12,7 +12,8 @@ public class NotificationConsumer {
 
     private final NotificationService notificationService;
 
-    @RabbitListener(queues = RabbitConfig.NOTIFICATION_QUEUE)
+    @RabbitListener(queues = RabbitConfig.NOTIFICATION_QUEUE,
+            containerFactory = "rabbitListenerContainerFactory")
     public void receiveNotification(Notification notification) {
         // Aquí procesas la notificación, por ejemplo, enviar email o SMS
         notificationService.processNotification(notification);
