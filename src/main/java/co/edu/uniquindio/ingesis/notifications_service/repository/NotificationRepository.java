@@ -27,4 +27,12 @@ public interface NotificationRepository
     Optional<Notification> findById(Long id);
 
     List<Notification> findByStatusAndScheduledAtBefore(NotificationStatus status, Instant before);
+
+    Page<Notification> findByRecipientIgnoreCaseOrderByCreatedAtDesc(
+            String recipient, Pageable pageable
+    );
+
+    Page<Notification> findByRecipientIgnoreCaseAndChannelOrderByCreatedAtDesc(
+            String recipient, Channel channel, Pageable pageable
+    );
 }

@@ -85,43 +85,28 @@ public class NotificationController {
     }
     @GetMapping("/me")
     @Operation(
-            summary = "Historial del usuario autenticado",
-            description = "Devuelve un listado paginado de notificaciones cuyo recipient coincide con el email (o principal) del JWT.",
+            summary = "Mis notificaciones",
+            description = "Devuelve el historial paginado de notificaciones del usuario autenticado. Filtro opcional por canal.",
             security = @SecurityRequirement(name = "bearerAuth"),
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Página de notificaciones",
-                            useReturnTypeSchema = true
-                    ),
-                    @ApiResponse(responseCode = "401", description = "No autorizado"),
-                    @ApiResponse(responseCode = "403", description = "Prohibido")
+                    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "401", description = "No autorizado")
             }
     )
     public ResponseEntity<Page<Notification>> myNotifications(
             Authentication authentication,
-            @RequestParam(required = false) NotificationStatus status,
             @RequestParam(required = false) Channel channel,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "createdAt,desc") String sort,
-            @RequestParam(required = false, name = "q") String search
+            @RequestParam(defaultValue = "20") int size
     ) {
-        Sort sortObj = parseSort(sort, "createdAt", Sort.Direction.DESC);
-        Pageable pageable = PageRequest.of(page, size, sortObj);
-        String email = authentication.getName();
+        String email = authentication.getName(); // del JwtTokenFilter (asegúrate que sea el email)
+        Pageable pageable = PageRequest.of(page, size);
 
-        Specification<Notification> spec = (root, query, cb) -> cb.conjunction();
+        Page<Notification> result = (channel == null)
+                ? notificationRepository.findByRecipientIgnoreCaseOrderByCreatedAtDesc(email, pageable)
+                : notificationRepository.findByRecipientIgnoreCaseAndChannelOrderByCreatedAtDesc(email, channel, pageable);
 
-        spec = spec.and(NotificationSpecs.recipientEq(email));
-        spec = spec.and(NotificationSpecs.statusEq(status));
-        spec = spec.and(NotificationSpecs.channelEq(channel));
-        spec = spec.and(NotificationSpecs.createdBetween(from, to));
-        spec = spec.and(NotificationSpecs.searchLike(search));
-
-        return ResponseEntity.ok(notificationRepository.findAll(spec, pageable));
+        return ResponseEntity.ok(result);
     }
 
     private Sort parseSort(String sortParam, String defaultProp, Sort.Direction defaultDir) {

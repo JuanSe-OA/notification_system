@@ -12,7 +12,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "notifications")
+@Table(
+        name = "notifications",
+        indexes = {
+                @Index(name = "idx_notifications_recipient", columnList = "recipient"),
+                @Index(name = "idx_notifications_recipient_channel", columnList = "recipient,channel"),
+                @Index(name = "idx_notifications_created_at", columnList = "created_at")
+        }
+)
 @Entity
 public class Notification {
     @Id
