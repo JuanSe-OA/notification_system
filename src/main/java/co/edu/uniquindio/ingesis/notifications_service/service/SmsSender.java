@@ -24,12 +24,12 @@ public class SmsSender implements ChannelSender {
             Twilio.init(accountSid, authToken);
 
             Message.creator(
-                    new com.twilio.type.PhoneNumber(notification.getRecipient()),
+                    new com.twilio.type.PhoneNumber(notification.getPhoneNumber()),
                     new com.twilio.type.PhoneNumber(fromPhone),
                     notification.getMessage()
             ).create();
 
-            System.out.println("✅ SMS enviado a: " + notification.getRecipient());
+            System.out.println("✅ SMS enviado a: " + notification.getPhoneNumber());
         } catch (Exception e) {
             System.err.println("❌ Error enviando SMS: " + e.getMessage());
             throw e;

@@ -10,6 +10,7 @@ public record NotificationResponse(
         String title,
         String message,
         String recipient,
+        String phoneNumber,
         Channel channel,
         NotificationStatus status,
         Instant createdAt,
