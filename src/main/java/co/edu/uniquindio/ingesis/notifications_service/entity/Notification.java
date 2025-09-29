@@ -35,7 +35,6 @@ public class Notification {
 
 
     private String recipient;
-    private String phoneNumber;
 
 
     @Enumerated(EnumType.STRING)
