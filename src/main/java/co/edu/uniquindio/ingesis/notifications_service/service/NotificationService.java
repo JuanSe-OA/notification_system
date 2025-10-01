@@ -43,7 +43,7 @@ public class NotificationService {
             switch (notification.getChannel()) {
                 case EMAIL -> emailSender.send(notification);
                 case SMS -> smsSender.send(notification);
-                // Otros canales...
+
             }
             notification.setStatus(NotificationStatus.SENT);
             notification.setSentAt(Instant.now());
