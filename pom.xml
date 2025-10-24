@@ -30,66 +30,8 @@
 		<java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <cucumber.version>7.18.1</cucumber.version>
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
-        <restassured.version>5.5.0</restassured.version>
 	</properties>
 	<dependencies>
-        <!-- Cucumber + JUnit Platform -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-picocontainer</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-
-        <!-- JUnit Platform Suite (para @Suite, @IncludeEngines, etc.) -->
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite</artifactId>
-            <version>1.10.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Rest Assured + JSON Schema validation -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${restassured.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <version>${restassured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -228,22 +170,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-            <!-- Surefire con JUnit Platform (Cucumber) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test*.java</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <!-- Variables con fallback -->
-                        <BASE_URL>http://localhost:8081</BASE_URL>
-                        <TOKEN>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqLmthbWlsbzMwMjBAZ21haWwuY29tIiwiaWF0IjoxNzYwOTk5NzQwLCJleHAiOjE3NjEwMDMzNDB9.XccjCd0Qm1zd5uYUjFlhiJr0Ax4k-hJclRWBYx_k7bc</TOKEN>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
 		</plugins>
 	</build>
 
