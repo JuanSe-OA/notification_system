@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/api/notifications/channels"
                         ).permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/notifications/**").authenticated()
                         .anyRequest().permitAll()
                 )
